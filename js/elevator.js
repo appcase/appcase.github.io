@@ -16,7 +16,7 @@ let eg = {
 
     showModal:function(htmlfile){
         $(".modal").html('');
-        $('.modal').load('./pages/'+htmlfile, {}, function(response, status){});
+        $('.modal').load('./pages/'+htmlfile);
         $('.modal')[0].style.display = 'block';
     },  
 
