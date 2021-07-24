@@ -1,0 +1,15 @@
+#elevators {width:100%;}
+#elevators, th, td {
+    border: 1px solid #aaa;
+    padding:0px;
+}
+#elevators td {
+    height:35px;
+}
+#elevators tbody tr:last-child td {
+    position: sticky;
+    bottom: 0;
+    background-color:#333;
+}
+.fvpres {width:35px;background-color:tomato;border:0; border-radius:0;padding-left:3px;padding-right:3px;float:right;color:black;font-size:13px;}
+.fvnone {width:35px;background-color:yellowgreen;border:0; border-radius:0;padding-left:3px;padding-right:3px;float:right;color:black;font-size:13px;}
