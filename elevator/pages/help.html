@@ -1,0 +1,25 @@
+<div class='modaltnavbar'>
+    <div class='navappnamehlp' style='font-size:15px;float:left;margin-left:7px;display:flex;justify-content: center;align-items: center;height:50px;color:lime;'>Elevator Controller : Help</div>
+    <div style='float:right;margin-right:16px;display:flex;justify-content: center;align-items: center;height:50px;'>
+        <i style='cursor:pointer;' class='fas fa-lg fa-expand lime fscr' onclick='eg.showFScreen()'></i>&emsp;&emsp;
+        <i class="far fa-2x fa-times-circle lime navicon" onclick="eg.hideModal();"></i>
+    </div>
+</div>
+<div id="modalbodybnav" class='modalbodybnavhlp'>
+    <div style="font-size:15px;color:purple;text-align:left;padding:5px;">
+        As the elevator controller of a multi storeyed building, you have to assign the best elevator option to your moving visitors to minimize their waiting time in the queue.<br><br>You game dashboard shows each of the floors along with the number of visitors waiting there. It also displays the elevator movements in-between the floors.<br><br>Tap on a floor and it will list all the visitors there. Assign an elevator to each of them by deciding which one will be the best for the visitor.<br><br>Each visitor has a hidden random expected waiting time. At the end of the visitor movement the game tracks the actual waiting time and compares that with the expected. This is the 'Op Ratio'.<br><br>Try to keep the 'Op Ratio' below or equal to 1. It signifies that all the visitors were moved within their expected waiting time.<br><br>If the visitor crowd at any of the floors exceed 100, the game ends. Otherwise, this is a simple game that requires eye and finger coordination and a little bit of mental mathematics. Enjoy playing...<br><br>P.S: This game does not send any data to any server but stores locally in your browser. You can close the game any time. You can resumes the game by reopening it. 
+    </div>
+</div>
+<div class="modalbnavbar modalbnavbarhlp"><div></div></div>
+<script>
+    $(document).ready(function(){
+        if(eg.gplay.fullscreen) $('.fscr').removeClass('fa-expand').addClass('fa-compress');
+        else $('.fscr').removeClass('fa-compress').addClass('fa-expand');
+        eg.createBNavHelp();
+    });
+    eg.createBNavHelp = function(){
+        let html = '<table style="width:100%;border:0;">';
+        html += '<tr style="width:100%;border:0;"><td style="vertical-align:middle;height:50px;border:0;width:100%;" onclick="eg.hideModal();"><i class="far fa-lg fa-times-circle lime"></i><br><span style="font-size:13px;font-weight:500;color:white;">Close</span></td></tr></table>';
+        $('.modalbnavbarhlp').html(html);
+    };
+</script>

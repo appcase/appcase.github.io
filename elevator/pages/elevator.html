@@ -1,0 +1,59 @@
+<div class='modaltnavbar'>
+    <div class='navappnameele' style='font-size:19px;float:left;margin-left:7px;display:flex;justify-content: center;align-items: center;height:50px;color:lime;'>Elevator Details</div>
+    <div style='float:right;margin-right:16px;display:flex;justify-content: center;align-items: center;height:50px;'>
+        <i style='cursor:pointer;' class='fas fa-lg fa-expand lime fscr' onclick='eg.showFScreen()'></i>&emsp;&emsp;
+        <i class="far fa-2x fa-times-circle lime navicon" onclick="eg.hideModal();"></i>
+    </div>
+</div>
+<div id="modalbodybnav" class='modalbodybnavele'>
+    <div style="display:inline-flex;width:98%;margin:3px;">
+        <div style="width:30%;background-color:bisque;border:1px solid #333;border-radius:5px;margin:3px;font-family:Orbitron;">
+            Weight
+        </div>
+        <div style="width:40%;background-color:bisque;border:1px solid #333;border-radius:5px;margin:3px;font-family:Orbitron;cursor:pointer;" data-floor="0" onclick="eg.showEleFloor(this);">
+            Floor
+        </div>
+        <div style="width:30%;background-color:bisque;border:1px solid #333;border-radius:5px;margin:3px;font-family:Orbitron;">
+            Person
+        </div>
+    </div>
+    <hr>
+    <div style="width:98%;" class="elepassengers"></div>
+</div>
+<div class="modalbnavbar modalbnavbarele"></div>
+
+<script>
+    $(document).ready(function(){
+        if(eg.gplay.fullscreen) $('.fscr').removeClass('fa-expand').addClass('fa-compress');
+        else $('.fscr').removeClass('fa-compress').addClass('fa-expand');
+        eg.createBNavEle();        
+        eg.showDetailsEle();  
+    });
+
+    eg.createBNavEle = function(){
+        let html = '<table style="width:100%;border:0;">';
+        html += '<tr style="width:100%;border:0;"><td style="vertical-align:middle;height:50px;border:0;width:35%;" onclick="eg.changeElevator(-1);"><i class="fas fa-lg fa-arrow-circle-left lime"></i><br><span style="font-size:15px;font-weight:500;color:white;">Previous Elevator</span></td><td style="vertical-align:middle;height:50px;border:0;width:30%;" onclick="eg.hideModal();"><i class="far fa-lg fa-times-circle lime"></i><br><span style="font-size:15px;font-weight:500;color:white;">Close</span></td><td style="vertical-align:middle;height:50px;border:0;width:35%;" onclick="eg.changeElevator(1);"><i class="fas fa-lg fa-arrow-circle-right lime"></i><br><span style="font-size:15px;font-weight:500;color:white;">Next Elevator</span></td></tr></table>';
+        $('.modalbnavbarele').html(html);
+    }
+
+    eg.changeElevator = function(x){
+        let ele = eg.gplay.eletapped - 1;
+        if(ele == 0 && x == -1) {
+            eg.toastMessage('No previous elevator!', 1000);
+            return;
+        }
+        if(eg.gplay.eletapped == eg.gsets.elevators && x == 1) {
+            eg.toastMessage('No next elevator!', 1000);
+            return;
+        }
+        eg.gplay.eletapped = eg.gplay.eletapped + x;
+        eg.showDetailsEle();
+    };
+
+    eg.showEleFloor = function(obj){
+        eg.gplay.flrtapped = $(obj).data('floor');
+        eg.showModal('floor.html');
+    } 
+
+
+</script>
