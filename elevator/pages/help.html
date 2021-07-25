@@ -5,9 +5,10 @@
         <i class="far fa-2x fa-times-circle lime navicon" onclick="eg.hideModal();"></i>
     </div>
 </div>
+<input type='file' id='egFile' style='display:none;' onchange='readEGjson();'>
 <div id="modalbodybnav" class='modalbodybnavhlp'>
     <div style="font-size:15px;color:purple;text-align:left;padding:5px;">
-        As the elevator controller of a ten storeyed building with seven elevators, your task is to assign the best elevator option to each of the visitors to minimize their waiting time in the queue.<br><br>The game dashboard shows ten floors F:0 to F:10 with the number of visitors waiting, in the red box beside each floor number. It also displays the seven elevators E:1 to E:7 in the panel below. The grid displays the movement of the elevators in-between the floors.<br><br>Tap on a floor number and it will list all the visitors waiting there along with their id, current waiting time, the floor and direction where they intend to go. Assign each of them the best elevator available. To help you decide, the elevator panel displays the current position of each of the elevators with respect to the floor the vistor is currently waiting. Tap on an elevator to view the passenger details and infer information like the floors where the elevator has to make a stop.<br><br>Each visitor has a hidden random expected waiting time. At the end of the visitor movement the game tracks the actual waiting time and compares that with the expected. This is the 'Op Ratio'.<br><br>Try to keep the 'Op Ratio' below or equal to 1. It signifies that all the visitors were moved within their expected waiting time.<br><br>If the visitor crowd at any of the floors exceed 50, the game ends. Otherwise, this is a simple game that requires a little bit of memory, reflexes and mental mathematics. Enjoy playing...<br><br>P.S: This game does not send any data to any server but saves locally in your browser. You can close the game any time and resume it by reopening. 
+        As the elevator controller of a ten storeyed building with seven elevators, your task is to assign the best elevator option to each of the visitors to minimize their waiting time in the queue.<br><br>The game dashboard shows ten floors F:0 to F:10 with the number of visitors waiting, in the red box beside each floor number. It also displays the seven elevators E:1 to E:7 in the panel below. The grid displays the movement of the elevators in-between the floors.<br><br>Tap on a floor number and it will list all the visitors waiting there along with their id, current waiting time, the floor and direction where they intend to go. Assign each of them the best elevator available. To help you decide, the elevator panel displays the current position of each of the elevators with respect to the floor the vistor is currently waiting. Tap on an elevator to view the passenger details and infer information like the floors where the elevator has to make a stop.<br><br>Each visitor has a hidden random expected waiting time. At the end of the visitor movement the game tracks the actual waiting time and compares that with the expected. This is the 'Op Ratio'.<br><br>Try to keep the 'Op Ratio' below or equal to 1. It signifies that all the visitors were moved within their expected waiting time.<br><br>If the visitor crowd at any of the floors exceed 50 OR the 'Op Ratio' exceeds 10, the game ends. Otherwise, this is a simple game that requires a little bit of memory, reflexes and mental mathematics. Enjoy playing!!!<br><br>P.S: This game does not send any data to any server but saves locally in your browser. You can close the game any time and resume it by reopening later. <br><br>However, if you want, you can download the game data to you local system by clicking the 'Download' option below. Upload the game file using the 'Upload' option below to continue the game.<br>
     </div>
 </div>
 <div class="modalbnavbar modalbnavbarhlp"><div></div></div>
@@ -19,7 +20,38 @@
     });
     eg.createBNavHelp = function(){
         let html = '<table style="width:100%;border:0;">';
-        html += '<tr style="width:100%;border:0;"><td style="vertical-align:middle;height:50px;border:0;width:100%;" onclick="eg.hideModal();"><i class="far fa-lg fa-times-circle lime"></i><br><span style="font-size:13px;font-weight:500;color:white;">Close</span></td></tr></table>';
+        html += '<tr style="width:100%;border:0;"><td style="vertical-align:middle;height:50px;border:0;width:33%;" onclick="downloadEG();"><i class="fas fa-lg fa-download lime"></i><br><span style="font-size:13px;font-weight:500;color:white;">Download</span></td><td style="vertical-align:middle;height:50px;border:0;width:34%;" onclick="eg.hideModal();"><i class="far fa-lg fa-times-circle lime"></i><br><span style="font-size:13px;font-weight:500;color:white;">Close</span></td><td style="vertical-align:middle;height:50px;border:0;width:33%;" onclick="uploadEG();"><i class="fas fa-lg fa-upload lime"></i><br><span style="font-size:13px;font-weight:500;color:white;">Upload</span></td></tr></table>';
         $('.modalbnavbarhlp').html(html);
     };
+
+    function downloadEG(){
+        let element = document.createElement('a');
+        element.style.display = 'none';
+        let gamedata = {gsets: eg.gsets, gplay:eg.gplay};
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(gamedata)));
+        element.setAttribute('download', 'elevatorGame.json');
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
+    function uploadEG(){
+        $('#egFile').click();
+    }
+
+    function readEGjson(){
+        var file = $('#egFile')[0].files[0];
+  		var reader = new FileReader();
+  		reader.onload = function(e){
+            let game = JSON.parse(e.target.result);
+            if(game.gsets && game.gplay){
+                localStorage.setItem('elevator.gsets', JSON.stringify(game.gsets));
+                localStorage.setItem('elevator.gplay', JSON.stringify(game.gplay));		
+                eg.loadFromLocal();
+                eg.hideModal();
+                eg.toastMessage('Game upload complete!', 1500);
+            }           
+  		};
+  		reader.readAsText(file, "UTF-8");
+    }
 </script>
