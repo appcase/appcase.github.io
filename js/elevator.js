@@ -17,14 +17,21 @@ let eg = {
     showModal:function(htmlfile){
         $(".modal").html('');
         $('.modal').load('./pages/'+htmlfile);
-        $('.modal')[0].style.display = 'block';
+        $('.modal').show();
     },  
 
     hideModal:function(){
         $(".modal").html('');
+        $('.modal').hide();
         eg.gplay.flrtapped = -3;
+        eg.gplay.eletapped = -3;        
+    },
+
+    hideElevatorModal:function(){
+        $(".modal").html('');
+        $('.modal').hide();
         eg.gplay.eletapped = -3;
-        $('.modal')[0].style.display = 'none';
+        if(eg.gplay.flrtapped>=0) eg.showModal('floor.html');
     },
 
     randomInteger: function(min, max) {
@@ -32,26 +39,25 @@ let eg = {
         //return Math.round((min - 0.5) + Math.random() * (max - min + 1));
     },
 
-    restartGame:function(){   
-        if (prompt("Restarting the game will delete all the progress of the current play. Do you want to restart?\n\nPlease confirm your action by entering 951 in the input box below.") == 951) {
+    resetGame:function(){   
+        if (prompt("Resetting the game will delete all the progress of the current play. Do you want to reset?\n\nPlease confirm your action by entering 951 in the input box below.") == 951) {
             if(eg.gplay.eAgent) clearInterval(eg.gplay.eAgent);
             localStorage.removeItem('elevator.gsets');
             localStorage.removeItem('elevator.gplay');
             $('.ppicon').removeClass('fa-pause').addClass('fa-play');
             $('.ppicon').next().next().text('Play');
+            eg.toastMessage('Game reset complete!', 1500);
             eg.loadFromLocal();
-            eg.toastMessage('Game restarted!', 1500);
         }
     },
 
     playGame:function(icon){
         if($(icon).hasClass('fa-play')){
             if(eg.gplay.status!='end'){
-                console.log('here')
                 if(!eg.gplay.eAgent) eg.gplay.eAgent = setInterval(eg.runAgent, eg.gsets.eTimer);
                 $(icon).removeClass('fa-play').addClass('fa-pause');
-                $(icon).next().next().text('Pause');
-                eg.toastMessage('Game on!', 1500);
+                $(icon).next().next().text('Pause Game');
+                eg.toastMessage('Game On!<br>Visitors arriving soon...', 1500);
             }else{
                 eg.toastMessage('Game Over!<br>Please restart.', 5000);
             }
@@ -59,7 +65,7 @@ let eg = {
             if(eg.gplay.eAgent) clearInterval(eg.gplay.eAgent);
             eg.gplay.eAgent = null;
             $(icon).removeClass('fa-pause').addClass('fa-play');
-            $(icon).next().next().text('Play');
+            $(icon).next().next().text('Resume Game');
             eg.toastMessage('Game paused!', 1500);
         }
     },
@@ -101,7 +107,7 @@ let eg = {
             }
             html += '</tr>';
         }
-        html += '</table><div style="text-align:center;color:purple;font-size:15px;">Op Ratio below or equal to 1 ensures that all the visitors are reaching their floors on or before expected time.<br><u>Try to keep it as low as possible!</u></div>';
+        html += '</table><div style="text-align:center;color:purple;font-size:15px;">Op Ratio below or equal to 1 ensures that all the visitors are reaching their floors on or before expected time.<br><u>Try to keep it as low as possible!</u></div><br><div style="text-align:center;color:purple;font-size:15px;">Do not forget to check <i style="cursor:pointer;" class="fas fa-lg fa-question-circle lime" onclick="eg.showModal(\'help.html\')"></i> for game instructions.</div>';
         $('#appbody').html(html);
         $('.vcount').off('fill').on('fill', function(){
             if(parseInt($(this).text()) > 0) $(this).removeClass('fvpres fvnone').addClass('fvpres')
@@ -216,7 +222,7 @@ let eg = {
         $('.vcount').trigger('fill');
 
         for(let j=0; j<eg.gplay.floors.length; j++){
-            if(eg.gplay.floors[j].ctotal>100){
+            if(eg.gplay.floors[j].ctotal>50){
                 eg.gplay.status = 'end';
                 break;
             }
