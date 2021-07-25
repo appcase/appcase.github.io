@@ -93,8 +93,8 @@ let eg = {
     },
 
     setupGame:function(){      
-        let html = '<table id="statTab" style="width:100%;font-size:14px;cursor:pointer;font-family:Orbitron;"><tr><td style="width:60%;border:0;text-align:left;font-weight:bold;color:purple;">Visitors Moved: </td><td style="width:40%;border:0;text-align:left;font-weight:bold;color:purple;">Op Ratio:</td></tr></table>';  
-        html += '<table id="elevators" style="font-size:12px;cursor:pointer;font-family:Orbitron;">';
+        let html = '<table id="statTab" style="width:100%;font-size:14px;font-family:Orbitron;"><tr><td style="width:60%;border:0;text-align:left;font-weight:bold;color:purple;">Visitors Moved: </td><td style="width:40%;border:0;text-align:left;font-weight:bold;color:purple;">Op Ratio:</td></tr></table>';  
+        html += '<table id="elevators" style="font-size:12px;font-family:Orbitron;">';
         for(let i=eg.gsets.floors; i>=0; i--){
             html += '<tr>';
             for(let j=0; j<=eg.gsets.elevators; j++){
