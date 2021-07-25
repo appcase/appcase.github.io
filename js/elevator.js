@@ -102,7 +102,7 @@ let eg = {
                     if(i==0) html += '<td style="width:23%;text-align:left;color:white;" onclick="eg.showFDetails(this);">&nbsp;<b>F: 0</b><b><span class="fvnone vcount">0</span></b></td>';
                     if(i!=0) html += '<td style="width:23%;text-align:left;" onclick="eg.showFDetails(this);">&nbsp;<b>F: '+i+'</b><b><span class="fvnone vcount">0</span></b></td>';
                 }else{
-                    html += '<td style="cursor:pointer;width:11%;" onclick="eg.showEDetails(this);">&nbsp;</td>';
+                    html += '<td style="width:11%;" onclick="eg.showEDetails(this);">&nbsp;</td>';
                 }
             }
             html += '</tr>';
@@ -424,8 +424,10 @@ let eg = {
     showDetailsFlr:function(){
         $('.navappnameflr').text('Floor '+("0"+parseInt(eg.gsets.floors - eg.gplay.flrtapped)).slice(-2) + ' Details');
         let html = '<table style="width:100%;border:0;"><tr>';
+        let countU = (eg.gplay.floors[eg.gplay.flrtapped].visitorsU) ? eg.gplay.floors[eg.gplay.flrtapped].visitorsU.length : 0;
+        let countD = (eg.gplay.floors[eg.gplay.flrtapped].visitorsD) ? eg.gplay.floors[eg.gplay.flrtapped].visitorsD.length : 0;
         html += '<td style="width:23%;text-align:center;font-family:Orbitron;font-size:14px;background-color:bisque;"><b>Visitors</b></td>';  
-        html += '<td colspan='+eg.gplay.elevators.length+' style="text-align:center;font-family:Orbitron;font-size:14px;background-color:bisque;"><b>Tap Grid Boxes To Assign Elevator</b></td></tr><tr><td style="background-color:bisque;cursor:pointer;"><i class="far fa-2x fa-times-circle navicon" onclick="eg.hideModal();"></i></td>';
+        html += '<td colspan='+eg.gplay.elevators.length+' style="text-align:center;font-family:Orbitron;font-size:14px;background-color:bisque;"><b>Tap Grid Boxes To Assign Elevator</b></td></tr><tr><td style="background-color:bisque;font-family:Orbitron;font-size:14px;"><b>'+parseInt(countU+countD)+'<br>People</b></td>';
         for(let i=0; i<eg.gplay.elevators.length; i++){
             let atFlr = eg.gplay.elevators[i].curFloorIndex - eg.gplay.flrtapped;
             let icon = (atFlr < 0) ? 'fa-arrow-down' : 'fa-arrow-up';
