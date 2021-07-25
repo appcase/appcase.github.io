@@ -26,10 +26,12 @@
 
     function downloadEG(){
         let element = document.createElement('a');
+        let d = new Date();
+        let ds = d.getFullYear()+'-'+("0"+parseInt(d.getMonth() + 1)).slice(-2)+'-'+("0"+parseInt(d.getDate())).slice(-2)+'T'+("0"+parseInt(d.getHours())).slice(-2)+'-'+("0"+parseInt(d.getMinutes())).slice(-2)+'-'+("0"+parseInt(d.getSeconds())).slice(-2);
         element.style.display = 'none';
         let gamedata = {gsets: eg.gsets, gplay:eg.gplay};
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(gamedata)));
-        element.setAttribute('download', 'elevatorGame.json');
+        element.setAttribute('download', 'elevatorGame_'+ds+'.json');
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
