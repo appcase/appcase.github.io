@@ -107,7 +107,7 @@ let eg = {
             }
             html += '</tr>';
         }
-        html += '</table><div style="text-align:center;color:purple;font-size:15px;">Op Ratio below or equal to 1 ensures that all the visitors are reaching their floors on or before expected time.<br><u>Try to keep it as low as possible!</u></div><br><div style="text-align:center;color:purple;font-size:15px;">Do not forget to check <i style="cursor:pointer;" class="fas fa-lg fa-question-circle lime" onclick="eg.showModal(\'help.html\')"></i> for game instructions.</div>';
+        html += '</table><div style="text-align:center;color:purple;font-size:15px;">Op Ratio below or equal to 1 ensures that all the visitors are reaching their floors on or before expected time.<br><u>Try to keep it as low as possible!</u></div><div style="text-align:center;color:purple;font-size:15px;">Do not forget to check <i style="cursor:pointer;" class="fas fa-lg fa-question-circle lime" onclick="eg.showModal(\'help.html\')"></i> for game instructions.</div>';
         $('#appbody').html(html);
         $('.vcount').off('fill').on('fill', function(){
             if(parseInt($(this).text()) > 0) $(this).removeClass('fvpres fvnone').addClass('fvpres')
