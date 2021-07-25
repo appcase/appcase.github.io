@@ -93,7 +93,7 @@ let eg = {
     },
 
     setupGame:function(){      
-        let html = '<table id="statTab" style="width:100%;font-size:14px;font-family:Orbitron;"><tr><td style="width:60%;border:0;text-align:left;font-weight:bold;color:purple;">Visitors Moved: </td><td style="width:40%;border:0;text-align:left;font-weight:bold;color:purple;">Op Ratio:</td></tr></table>';  
+        let html = '<table id="statTab" style="width:100%;font-size:14px;font-family:Orbitron;"><tr><td style="width:60%;border:0;text-align:left;font-weight:bold;color:purple;">Visitors Moved: '+eg.gplay.pmoved+'</td><td style="width:40%;border:0;text-align:left;font-weight:bold;color:purple;">Op Ratio: '+eg.gplay.wratio+'</td></tr></table>';  
         html += '<table id="elevators" style="font-size:12px;font-family:Orbitron;">';
         for(let i=eg.gsets.floors; i>=0; i--){
             html += '<tr>';
@@ -232,7 +232,13 @@ let eg = {
     exeEleLogic:function(){
 
         $('#statTab tr td:eq(0)').text('Visitors Moved: '+eg.gplay.pmoved);
-        $('#statTab tr td:eq(1)').text('Op Ratio: '+(eg.gplay.twait/eg.gplay.itwait).toFixed(3));
+        eg.gplay.wratio = (eg.gplay.twait/eg.gplay.itwait).toFixed(3);
+        $('#statTab tr td:eq(1)').text('Op Ratio: '+eg.gplay.wratio);
+
+        if(eg.gplay.wratio>10){
+            eg.gplay.status = 'end';
+            return;
+        }
 
         for(let i=0; i<eg.gplay.elevators.length; i++){
 
@@ -255,7 +261,8 @@ let eg = {
                             $('#statTab tr td:eq(0)').text('Visitors Moved: '+eg.gplay.pmoved);
                             eg.gplay.itwait += eg.gplay.elevators[i].visitorsU[j].iwait;
                             eg.gplay.twait += eg.gplay.elevators[i].visitorsU[j].qwait;
-                            eg.gplay.history.unshift(eg.gplay.elevators[i].visitorsU.splice(j, 1)[0]);
+                            //eg.gplay.history.unshift(eg.gplay.elevators[i].visitorsU.splice(j, 1)[0]);
+                            eg.gplay.elevators[i].visitorsU.splice(j, 1);
                         }else{
                             eg.gplay.elevators[i].totweight += eg.gplay.elevators[i].visitorsU[j].weight;
                         }
@@ -272,7 +279,8 @@ let eg = {
                                 $('#statTab tr td:eq(0)').text('Visitors Moved: '+eg.gplay.pmoved);
                                 eg.gplay.itwait += eg.gplay.elevators[i].visitorsD[j].iwait;
                                 eg.gplay.twait += eg.gplay.elevators[i].visitorsD[j].qwait;
-                                eg.gplay.history.unshift(eg.gplay.elevators[i].visitorsD.splice(j, 1)[0]);
+                                //eg.gplay.history.unshift(eg.gplay.elevators[i].visitorsD.splice(j, 1)[0]);
+                                eg.gplay.elevators[i].visitorsD.splice(j, 1);
                             }else{
                                 eg.gplay.elevators[i].totweight += eg.gplay.elevators[i].visitorsD[j].weight;
                             }
