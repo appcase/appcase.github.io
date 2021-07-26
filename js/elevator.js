@@ -314,6 +314,7 @@ let eg = {
                 $('.vcount').trigger('fill');
 
                 let shouldmove = true;
+
                 if(eg.gplay.elevators[i].visitorsU.length==0 && eg.gplay.elevators[i].visitorsD.length==0){
                     let assigned = false;
                     for(let j=0; j<eg.gplay.floors.length;j++){
@@ -337,11 +338,43 @@ let eg = {
                 if(shouldmove) eg.gplay.elevators[i].mode = 'M';
 
                 if(eg.gplay.elevators[i].mode=='S'){
+                    eg.gplay.elevators[i].dir = '';
                     if(eg.gplay.elevators[i].curFloorIndex == eg.gsets.floors)
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-open red"></i><br><b>E-'+(i+1)+'</b>').css('color', 'white').css('font-size', '12px').css('font-family', 'Orbitron');
                     else
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-open red"></i>');
                 }else{
+                    let dir = '';
+                    if(eg.gplay.elevators[i].visitorsU.length==0 && eg.gplay.elevators[i].visitorsD.length==0){
+                        for(let j=0; j<eg.gplay.floors.length;j++){
+                            for(let k=0; k<eg.gplay.floors[j].visitorsU.length;k++){
+                                if(eg.gplay.floors[j].visitorsU[k].assignedE==i){
+                                    if(eg.gplay.floors[j].visitorsU[k].fromI > eg.gplay.elevators[i].curFloorIndex){
+                                        dir = 'D';
+                                    }
+                                    if(eg.gplay.floors[j].visitorsU[k].fromI < eg.gplay.elevators[i].curFloorIndex){
+                                        dir = 'U';
+                                    }
+                                }
+                            }
+                            if(dir==''){
+                                for(let k=0; k<eg.gplay.floors[j].visitorsD.length;k++){
+                                    if(eg.gplay.floors[j].visitorsD[k].assignedE==i){
+                                        if(eg.gplay.floors[j].visitorsD[k].fromI > eg.gplay.elevators[i].curFloorIndex){
+                                            dir = 'D';
+                                        }
+                                        if(eg.gplay.floors[j].visitorsD[k].fromI < eg.gplay.elevators[i].curFloorIndex){
+                                            dir = 'U';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        if(eg.gplay.elevators[i].visitorsU.length < eg.gplay.elevators[i].visitorsD.length) dir = 'D';
+                        if(eg.gplay.elevators[i].visitorsU.length >= eg.gplay.elevators[i].visitorsD.length) dir = 'U';
+                    }
+                    eg.gplay.elevators[i].dir = dir;
                     if(eg.gplay.elevators[i].curFloorIndex == eg.gsets.floors)
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-closed red"></i><br><b>E-'+(i+1)+'</b>').css('color', 'white').css('font-size', '12px').css('font-family', 'Orbitron');
                     else
@@ -352,38 +385,13 @@ let eg = {
 
             if(eg.gplay.elevators[i].mode == 'M'){
 
-                let dir = 'U';
-                let reachingFInd = 0;
-
-                if(eg.gplay.elevators[i].visitorsU.length==0 && eg.gplay.elevators[i].visitorsD.length==0){
-                    for(let j=0; j<eg.gplay.floors.length;j++){
-                        for(let k=0; k<eg.gplay.floors[j].visitorsU.length;k++){
-                            if(eg.gplay.floors[j].visitorsU[k].assignedE==i){
-                                if(eg.gplay.floors[j].visitorsU[k].fromI > eg.gplay.elevators[i].curFloorIndex){
-                                    dir = 'D';
-                                }
-                            }
-                        }
-                        if(dir=='U'){
-                            for(let k=0; k<eg.gplay.floors[j].visitorsD.length;k++){
-                                if(eg.gplay.floors[j].visitorsD[k].assignedE==i){
-                                    if(eg.gplay.floors[j].visitorsD[k].fromI > eg.gplay.elevators[i].curFloorIndex){
-                                        dir = 'D';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }else{
-                    if(eg.gplay.elevators[i].visitorsU.length < eg.gplay.elevators[i].visitorsD.length) dir = 'D';
-                }
-
-                eg.gplay.elevators[i].dir = dir;
+                let dir = eg.gplay.elevators[i].dir;
+                let reachingFInd = eg.gplay.elevators[i].curFloorIndex;
                 reachingFInd = (dir=='U') ? eg.gplay.elevators[i].curFloorIndex - 1 : eg.gplay.elevators[i].curFloorIndex + 1;
-
                 eg.gplay.elevators[i].curFloorIndex = reachingFInd;
 
                 let shouldstop = false;
+
                 for(let j=eg.gplay.elevators[i].visitorsU.length-1; j>=0; j--){                    
                     if(eg.gplay.elevators[i].visitorsU[j].toI == eg.gplay.elevators[i].curFloorIndex){
                         shouldstop = true;
@@ -413,11 +421,43 @@ let eg = {
                 if(shouldstop) eg.gplay.elevators[i].mode = 'S';
 
                 if(eg.gplay.elevators[i].mode=='S'){
+                    eg.gplay.elevators[i].dir = '';
                     if(eg.gplay.elevators[i].curFloorIndex == eg.gsets.floors)
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-open red"></i><br><b>E-'+(i+1)+'</b>').css('color', 'white').css('font-size', '12px').css('font-family', 'Orbitron');
                     else
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-open red"></i>');
                 }else{
+                    let dir = '';
+                    if(eg.gplay.elevators[i].visitorsU.length==0 && eg.gplay.elevators[i].visitorsD.length==0){
+                        for(let j=0; j<eg.gplay.floors.length;j++){
+                            for(let k=0; k<eg.gplay.floors[j].visitorsU.length;k++){
+                                if(eg.gplay.floors[j].visitorsU[k].assignedE==i){
+                                    if(eg.gplay.floors[j].visitorsU[k].fromI > eg.gplay.elevators[i].curFloorIndex){
+                                        dir = 'D';
+                                    }
+                                    if(eg.gplay.floors[j].visitorsU[k].fromI < eg.gplay.elevators[i].curFloorIndex){
+                                        dir = 'U';
+                                    }
+                                }
+                            }
+                            if(dir==''){
+                                for(let k=0; k<eg.gplay.floors[j].visitorsD.length;k++){
+                                    if(eg.gplay.floors[j].visitorsD[k].assignedE==i){
+                                        if(eg.gplay.floors[j].visitorsD[k].fromI > eg.gplay.elevators[i].curFloorIndex){
+                                            dir = 'D';
+                                        }
+                                        if(eg.gplay.floors[j].visitorsD[k].fromI < eg.gplay.elevators[i].curFloorIndex){
+                                            dir = 'U';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        if(eg.gplay.elevators[i].visitorsU.length < eg.gplay.elevators[i].visitorsD.length) dir = 'D';
+                        if(eg.gplay.elevators[i].visitorsU.length >= eg.gplay.elevators[i].visitorsD.length) dir = 'U';
+                    }
+                    eg.gplay.elevators[i].dir = dir;
                     if(eg.gplay.elevators[i].curFloorIndex == eg.gsets.floors)
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-closed red"></i><br><b>E-'+(i+1)+'</b>').css('color', 'white').css('font-size', '12px').css('font-family', 'Orbitron');
                     else
@@ -432,9 +472,10 @@ let eg = {
     updateElePanel:function(){
         for(let i=0; i<eg.gplay.elevators.length; i++){
             let atFlr = eg.gsets.floors - eg.gplay.elevators[i].curFloorIndex;
-            let dir = 'U';
+            let dir = eg.gplay.elevators[i].dir;
             if(!eg.gplay.elevators[i].dir) dir = '';
             else{
+                if (eg.gplay.elevators[i].dir=='U') dir = 'U';
                 if (eg.gplay.elevators[i].dir=='D') dir = 'D';
             }
             let icon = '';
@@ -453,9 +494,10 @@ let eg = {
         html += '<td colspan='+eg.gplay.elevators.length+' style="text-align:center;font-family:Orbitron;font-size:14px;background-color:bisque;"><b>Tap Grid Boxes To Assign Elevator</b></td></tr><tr><td style="background-color:bisque;font-family:Orbitron;font-size:14px;"><b>'+parseInt(countU+countD)+'<br>People</b></td>';
         for(let i=0; i<eg.gplay.elevators.length; i++){
             let atFlr = eg.gsets.floors - eg.gplay.elevators[i].curFloorIndex;
-            let dir = 'U';
+            let dir = eg.gplay.elevators[i].dir;
             if(!eg.gplay.elevators[i].dir) dir = '';
             else{
+                if (eg.gplay.elevators[i].dir=='U') dir = 'U';
                 if (eg.gplay.elevators[i].dir=='D') dir = 'D';
             }
             let icon = '';
