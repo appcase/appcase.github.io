@@ -158,6 +158,7 @@ let eg = {
             eg.gplay.eAgentRun = 0;
         }
         eg.exeEleLogic();
+        eg.updateElePanel();
         if(eg.gplay.flrtapped>=0) eg.showDetailsFlr();
         if(eg.gplay.eletapped>=0) eg.showDetailsEle();
         eg.gplay.eAgentRun++ ;
@@ -422,15 +423,29 @@ let eg = {
                     else
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-columns red"></i>');
                 }
-
                 continue;
             }
 
         }
     },
 
+    updateElePanel:function(){
+        for(let i=0; i<eg.gplay.elevators.length; i++){
+            let atFlr = eg.gsets.floors - eg.gplay.elevators[i].curFloorIndex;
+            let dir = 'U';
+            if(!eg.gplay.elevators[i].dir) dir = '';
+            else{
+                if (eg.gplay.elevators[i].dir=='D') dir = 'D';
+            }
+            let icon = '';
+            if(dir=='U') icon = 'fa-arrow-up';
+            if(dir=='D') icon = 'fa-arrow-down';
+            $("#elevators").find('tr:eq('+eg.gsets.floors+')').find('td:eq('+(i+1)+')').append('<br><span style="font-family:Orbitron;font-size:12px;">'+atFlr+'&nbsp;<i class="fas fa-sm '+icon+' lime"></i></span>');
+        }
+    },
+
     showDetailsFlr:function(){
-        $('.navappnameflr').text('Floor '+("0"+parseInt(eg.gsets.floors - eg.gplay.flrtapped)).slice(-2) + ' Details');
+        $('.navappnameflr').text('Floor '+parseInt(eg.gsets.floors - eg.gplay.flrtapped) + ' Details');
         let html = '<table style="width:100%;border:0;"><tr>';
         let countU = (eg.gplay.floors[eg.gplay.flrtapped].visitorsU) ? eg.gplay.floors[eg.gplay.flrtapped].visitorsU.length : 0;
         let countD = (eg.gplay.floors[eg.gplay.flrtapped].visitorsD) ? eg.gplay.floors[eg.gplay.flrtapped].visitorsD.length : 0;
@@ -444,7 +459,7 @@ let eg = {
                 if (eg.gplay.elevators[i].dir=='D') dir = 'D';
             }
             let icon = '';
-            if(dir=='U') icon = 'fa-arrow-up red';
+            if(dir=='U') icon = 'fa-arrow-up';
             if(dir=='D') icon = 'fa-arrow-down';
             //let atFlr = eg.gplay.elevators[i].curFloorIndex - eg.gplay.flrtapped;
             //let icon = (atFlr < 0) ? 'fa-arrow-down' : 'fa-arrow-up';
