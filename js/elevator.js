@@ -79,7 +79,7 @@ let eg = {
         eg.gsets = JSON.parse(localStorage.getItem('elevator.gsets'));
         eg.gplay = JSON.parse(localStorage.getItem('elevator.gplay'));
         if(!eg.gsets){
-            eg.gsets = {floors:10, elevators:7, eTimer:500*8, fTimer:7};
+            eg.gsets = {floors:10, elevators:7, eTimer:500*6, fTimer:7};
         }        
         if(!eg.gplay){
             eg.gplay = {floors:[], elevators:[], history:[], pmoved:0, itwait:0, twait:0, wratio:0, status:'play'};
@@ -335,14 +335,14 @@ let eg = {
 
                 if(shouldmove) eg.gplay.elevators[i].mode = 'M';
 
-                if(eg.gplay.elevators[i].curFloorIndex == eg.gsets.floors){
-                    if(eg.gplay.elevators[i].mode=='S')
+                if(eg.gplay.elevators[i].mode=='S'){
+                    if(eg.gplay.elevators[i].curFloorIndex == eg.gsets.floors)
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-open red"></i><br><b>E-'+(i+1)+'</b>').css('color', 'white').css('font-size', '12px').css('font-family', 'Orbitron');
                     else
-                        $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-closed red"></i><br><b>E-'+(i+1)+'</b>').css('color', 'white').css('font-size', '12px').css('font-family', 'Orbitron');
-                }else{
-                    if(eg.gplay.elevators[i].mode=='S')
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-open red"></i>');
+                }else{
+                    if(eg.gplay.elevators[i].curFloorIndex == eg.gsets.floors)
+                        $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-closed red"></i><br><b>E-'+(i+1)+'</b>').css('color', 'white').css('font-size', '12px').css('font-family', 'Orbitron');
                     else
                         $("#elevators").find('tr:eq('+(eg.gplay.elevators[i].curFloorIndex)+')').find('td:eq('+(i+1)+')').html('<i class="fas fa-sm fa-door-closed red"></i>');
                 }
@@ -437,9 +437,18 @@ let eg = {
         html += '<td style="width:23%;text-align:center;font-family:Orbitron;font-size:14px;background-color:bisque;"><b>Visitors</b></td>';  
         html += '<td colspan='+eg.gplay.elevators.length+' style="text-align:center;font-family:Orbitron;font-size:14px;background-color:bisque;"><b>Tap Grid Boxes To Assign Elevator</b></td></tr><tr><td style="background-color:bisque;font-family:Orbitron;font-size:14px;"><b>'+parseInt(countU+countD)+'<br>People</b></td>';
         for(let i=0; i<eg.gplay.elevators.length; i++){
-            let atFlr = eg.gplay.elevators[i].curFloorIndex - eg.gplay.flrtapped;
-            let icon = (atFlr < 0) ? 'fa-arrow-down' : 'fa-arrow-up';
-            html += '<td style="text-align:center;font-size:15px;background-color:#333;color:white;cursor:pointer;" onclick="eg.showEDetails(this);"><i class="fas fa-sm fa-door-closed red"></i><br><span style="font-family:Orbitron;font-size:12px;font-weight:500;"><b>E-'+(i+1)+'</b></span><br><span style="font-family:Orbitron;font-size:12px;">'+Math.abs(atFlr)+'&nbsp;<i class="fas fa-sm '+icon+' lime"></i></span></td>'; 
+            let atFlr = eg.gsets.floors - eg.gplay.elevators[i].curFloorIndex;
+            let dir = 'U';
+            if(!eg.gplay.elevators[i].dir) dir = '';
+            else{
+                if (eg.gplay.elevators[i].dir=='D') dir = 'D';
+            }
+            let icon = '';
+            if(dir=='U') icon = 'fa-arrow-up red';
+            if(dir=='D') icon = 'fa-arrow-down';
+            //let atFlr = eg.gplay.elevators[i].curFloorIndex - eg.gplay.flrtapped;
+            //let icon = (atFlr < 0) ? 'fa-arrow-down' : 'fa-arrow-up';
+            html += '<td style="text-align:center;font-size:15px;background-color:#333;color:white;cursor:pointer;" onclick="eg.showEDetails(this);"><i class="fas fa-sm fa-door-closed red"></i><br><span style="font-family:Orbitron;font-size:12px;font-weight:500;"><b>E-'+(i+1)+'</b></span><br><span style="font-family:Orbitron;font-size:12px;">'+atFlr+'&nbsp;<i class="fas fa-sm '+icon+' lime"></i></span></td>'; 
         }
         html += '</tr>';
         for(let i=eg.gplay.floors[eg.gplay.flrtapped].visitorsU.length-1; i>=0; i--){
