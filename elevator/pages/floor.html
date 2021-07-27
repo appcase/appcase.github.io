@@ -5,9 +5,13 @@
         <i class="far fa-2x fa-times-circle lime navicon" onclick="eg.hideModal();"></i>
     </div>
 </div>
-<div id="modalbodybnav" class='modalbodybnavflr'><div>Floor Details</div></div>
+<div id="modalbodybnav" class='modalbodybnavflr'>
+    <div></div>
+    <div style="text-align:left;padding:5px;margin:5px;border:1px solid #333;border-radius:7px;">
+        Tap on a grid box to assign the visitor of that row to the elevator of that column. It will turn green.<br>Tap on a green box to unassign. It will turn white.<br><br>Legends:<br><span style="background-color:yellow;"><b>X - Y</b></span>: Visitor to move from floor X to floor Y.<br><i class="fas fa-stopwatch purple"></i>: Visitor's waiting time (in seconds). Try to keep it low!<br><i class="fas fa-weight purple"></i>: Visitor's weight (in 'as you like it' units).
+    </div>
+</div>
 <div class="modalbnavbar modalbnavbarflr"><div></div></div>
-
 
 <script>
     $(document).ready(function(){
@@ -19,7 +23,7 @@
 
     eg.assignEle = function(dir, id, cell){
         let ele = $(cell).closest('td').index() - 1;
-        let arr = dir=='U' ? 'visitorsU' : 'visitorsD';
+        let arr = dir==0 ? 'visitorsU' : 'visitorsD';
         for(let i=0; i<eg.gplay.floors[eg.gplay.flrtapped][arr].length; i++){
             if(eg.gplay.floors[eg.gplay.flrtapped][arr][i].id==id){ 
                 if(eg.gplay.floors[eg.gplay.flrtapped][arr][i].assignedE!=ele){
@@ -35,8 +39,8 @@
     };
 
     eg.createBNavFlr = function(){
-        let html = '<table style="width:100%;border:0;">';
-        html += '<tr style="width:100%;border:0;"><td style="vertical-align:middle;height:50px;border:0;width:35%;" onclick="eg.changeFloor(1);"><i class="fas fa-lg fa-arrow-circle-left lime"></i><br><span style="font-size:15px;font-weight:500;color:white;">Lower Floor</span></td><td style="vertical-align:middle;height:50px;border:0;width:30%;" onclick="eg.hideModal();"><i class="far fa-lg fa-times-circle lime"></i><br><span style="font-size:15px;font-weight:500;color:white;">Close</span></td><td style="vertical-align:middle;height:50px;border:0;width:35%;" onclick="eg.changeFloor(-1);"><i class="fas fa-lg fa-arrow-circle-right lime"></i><br><span style="font-size:15px;font-weight:500;color:white;">Upper Floor</span></td></tr></table>';
+        let html = '<table class="bottomnavTab">';
+        html += '<tr><td onclick="eg.changeFloor(1);"><i class="fas fa-lg fa-arrow-circle-left lime"></i><br><span class="white">Lower Floor</span></td><td onclick="eg.hideModal();"><i class="far fa-lg fa-times-circle lime"></i><br><span class="white">Close</span></td><td onclick="eg.changeFloor(-1);"><i class="fas fa-lg fa-arrow-circle-right lime"></i><br><span class="white">Upper Floor</span></td></tr></table>';
         $('.modalbnavbarflr').html(html);
     };
 
