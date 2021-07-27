@@ -1,15 +1,27 @@
-#elevators {width:100%;}
-#elevators, th, td {
-    border: 1px solid #aaa;
-    padding:0px;
-}
-#elevators td {
-    height:35px;
-}
-#elevators tbody tr:last-child td {
-    position: sticky;
-    bottom: 0;
-    background-color:#333;
-}
+.bottomnavTab {width:101%; border-collapse:collapse;font-family:OpenSans;font-size:15px;font-weight:normal;margin-left:-1px; margin-right:-3px;}
+.bottomnavTab td {vertical-align:middle;height:50px;border:none;text-align:center;width:33%}
+.bottomnavTab td:nth-child(2) {width:34%;}
+
+#elevators {width:100%;border: 1px solid #aaa; padding:0px;font-size:12px;font-family:Orbitron;}
+#elevators, #elevators tr, #elevators td {border: 1px solid #aaa; padding:0px;}
+#elevators tr:last-child td {position: sticky;bottom: 0;background-color:#333;color:white;}
+#elevators td {width:11%;text-align:center;height:35px; border: 1px solid #aaa; padding:0px;}
+#elevators td:first-child {width:23%;text-align:left;}
+
 .fvpres {width:35px;background-color:tomato;border:0; border-radius:0;padding-left:3px;padding-right:3px;float:right;color:black;font-size:13px;}
 .fvnone {width:35px;background-color:yellowgreen;border:0; border-radius:0;padding-left:3px;padding-right:3px;float:right;color:black;font-size:13px;}
+
+#statTab {width:100%;font-size:14px;font-family:Orbitron;}
+#statTab th, #statTab td {border:0;text-align:left;font-weight:bold;color:purple;width:40%}
+#statTab tr td:first-child {width:60%;}
+
+#flrDetails {width:100%;border:1px solid #aaa;}
+#flrDetails, #flrDetails tr, #flrDetails td {border: 1px solid #aaa; padding:0px;}
+#flrDetails tr:first-child {text-align:center;font-family:Orbitron;font-size:15px;background-color:bisque;}
+#flrDetails td:first-child {width:23%;text-align:left;font-size:15px;padding-left:1px}
+
+
+.vdetails {width:100%;border:none;}
+
+
+.elepanel {font-family:Orbitron;font-size:12px;color:white;}
