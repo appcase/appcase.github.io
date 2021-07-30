@@ -1,5 +1,5 @@
 @font-face {font-family: OpenSans; src: url('../fonts/OpenSans-Regular.ttf');}
-@font-face {font-family: Orbitron; src: url('../fonts/Orbitron-Regular.ttf');}
+@font-face {font-family: Orbitron; src: url('../fonts/OpenSans-Regular.ttf');}
 
 @media screen and (max-width: 430px) {
     #r_container {width: 100%; text-align:center;margin: 0 auto;} 
