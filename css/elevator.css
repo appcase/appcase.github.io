@@ -1,4 +1,4 @@
-@font-face {font-family: Orbitron; src: url('../fonts/Lato-Regular.ttf');}
+@font-face {font-family: Orbitron; src: url('../fonts/OpenSans-Regular.ttf');}
 
 .bottomnavTab {width:101%; border-collapse:collapse;font-family:OpenSans;font-size:15px;font-weight:normal;margin-left:-1px; margin-right:-3px;}
 .bottomnavTab td {vertical-align:middle;height:50px;border:none;text-align:center;width:33%}
